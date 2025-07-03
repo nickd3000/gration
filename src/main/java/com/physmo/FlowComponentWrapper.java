@@ -36,8 +36,6 @@ public class FlowComponentWrapper implements Subscriber {
             for (Msg<?> message : messages) {
                 outputChannel.send(message);
             }
-
-
         }
     }
 

@@ -1,5 +1,3 @@
 package com.physmo;
 
-public interface FlowComponent {
-
-}
+public interface FlowComponent{};
