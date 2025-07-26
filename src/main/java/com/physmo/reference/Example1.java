@@ -33,9 +33,8 @@ public class Example1 {
 
     public static Msg<?> enrichHeaders(Msg<?> msg) {
         HashMap<String, Object> headers = new HashMap<>();
-        headers.put("enrich", "a");
+        headers.put("enrich", "enriched by enrichHeaders");
         return new Msg<>(msg.getPayload(), headers);
-
     }
 
     public static boolean filter1(Msg<?> msg) {
