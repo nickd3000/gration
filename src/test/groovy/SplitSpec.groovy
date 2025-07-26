@@ -26,8 +26,8 @@ class SplitSpec extends Specification {
           results.get(0) == "Msg{payload=[one, two, three], headers={}}"
 
         and: "The message data after the split contains 3 entries"
-          results.get(1) == "Msg{payload=one, headers={}}"
-          results.get(2) == "Msg{payload=two, headers={}}"
-          results.get(3) == "Msg{payload=three, headers={}}"
+          results.get(1) == "Msg{payload=one, headers={splitIndex=0}}"
+          results.get(2) == "Msg{payload=two, headers={splitIndex=1}}"
+          results.get(3) == "Msg{payload=three, headers={splitIndex=2}}"
     }
 }
