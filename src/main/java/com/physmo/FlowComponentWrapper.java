@@ -14,6 +14,7 @@ public class FlowComponentWrapper implements Subscriber {
 
     @Override
     public void receive(Msg<?> msg) {
+        // TODO: can each component handle this stuff?
         if (outputChannel == null) {
             System.out.println("No output channel set");
             return;
