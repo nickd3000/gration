@@ -30,7 +30,7 @@ class MessageFlowSpec extends Specification {
         then:
           results.size() == 3
           results.get(0) == "Msg{payload=[one, two, three], headers={}}"
-          results.get(1) == "Msg{payload=one, headers={Property=1}}"
-          results.get(2) == "Msg{payload=three, headers={Property=1}}"
+          results.get(1) == "Msg{payload=one, headers={splitIndex=0, Property=1}}"
+          results.get(2) == "Msg{payload=three, headers={splitIndex=2, Property=1}}"
     }
 }
