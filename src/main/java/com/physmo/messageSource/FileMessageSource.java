@@ -3,43 +3,45 @@ package com.physmo.messageSource;
 import com.physmo.message.Msg;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DirectoryMessageSource implements MessageSource {
+public class FileMessageSource implements MessageSource<List<File>> {
 
     String path;
     
-    public DirectoryMessageSource(String path) {
+    public FileMessageSource(String path) {
         this.path = path;    
     }
     
     @Override
-    public Optional<Msg<?>> poll() {
+    public Optional<Msg<List<File>>> poll() {
+        return Optional.of(new Msg<>(get()));
+    }
+
+
+    public List<File> get() {
         Path directoryPath = Paths.get(path);
         File directory = directoryPath.toFile();
+        List<File> outputFiles = new ArrayList<>();
 
         if (!directory.exists() || !directory.isDirectory()) {
-            return Optional.empty();
+            return outputFiles;
         }
 
         File[] files = directory.listFiles();
-        if (files == null || files.length == 0) {
-            return Optional.empty();
+        if (files == null) {
+            return outputFiles;
         }
-
-        List<File> outputFiles = new ArrayList<>();
 
         for (File file : files) {
             if (file.isDirectory()) continue;
             outputFiles.add(file);
         }
 
-        return Optional.of(new Msg<>(outputFiles));
+        return outputFiles;
     }
 }
