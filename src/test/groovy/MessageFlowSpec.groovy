@@ -17,7 +17,7 @@ class MessageFlowSpec extends Specification {
                   .peek(m -> results.add(m.toString()))
                   .split()
                   .filter(m -> { return m.getPayload() != "two" })
-                  .handler(m -> {
+                  .handle(m -> {
                       HashMap<String, String> extraHeaders = new HashMap<>()
                       extraHeaders.put("Property", "1")
                       return new Msg(m, extraHeaders)

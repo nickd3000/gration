@@ -15,12 +15,20 @@ class DirectChannelSpec extends Specification {
                   received = msg as Msg<String>
               }
           }
-          channel.addSubscriber(subscriber)
+          channel.subscribe(subscriber)
 
         when:
           channel.send(new Msg<String>("hello"))
 
         then:
           received.getPayload() == "hello"
+
+        when: "unsubscribe"
+          received = null
+          channel.unsubscribe(subscriber)
+          channel.send(new Msg<String>("world"))
+
+        then:
+          received == null
     }
 }

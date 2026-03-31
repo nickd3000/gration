@@ -49,8 +49,18 @@ public class MessageFlow {
         return new MessageFlow(channelConnector);
     }
 
-    public MessageFlow handler(Handler handler) {
+    public MessageFlow handle(MessageHandler handler) {
         addFlowComponent(handler);
+        return this;
+    }
+
+    public MessageFlow transform(Transformer transformer) {
+        addFlowComponent(transformer);
+        return this;
+    }
+
+    public MessageFlow bridgeTo(MessageChannel channel) {
+        previousFlowComponentWrapper.setOutputChannel(channel);
         return this;
     }
 

@@ -51,13 +51,17 @@ public class DirectChannel implements MessageChannel, SubscribableChannel {
         process();
     }
 
-    @Override
-    public void addSubscriber(Subscriber r) {
+    public void subscribe(Subscriber r) {
         subscribers.add(r);
     }
 
-    public void removeSubscriber(Subscriber r) {
+    public void unsubscribe(Subscriber r) {
         subscribers.remove(r);
+    }
+
+    @Override
+    public void addSubscriber(Subscriber r) {
+        subscribe(r);
     }
 
 }

@@ -19,8 +19,11 @@ public class FlowComponentWrapper implements Subscriber {
             System.out.println("No output channel set");
             return;
         }
-        if (flowComponent instanceof Handler handler) {
+        if (flowComponent instanceof MessageHandler handler) {
             outputChannel.send(handler.handle(msg));
+        }
+        if (flowComponent instanceof Transformer transformer) {
+            outputChannel.send(transformer.transform(msg));
         }
         if (flowComponent instanceof Filter filter) {
             if (filter.filter(msg)) {
