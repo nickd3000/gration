@@ -2,6 +2,8 @@ package com.physmo.poller;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A {@code FixedRatePoller} is an implementation of the {@link Poller} interface that schedules
@@ -22,7 +24,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class FixedRatePoller extends Poller {
 
     static ScheduledExecutorService scheduler = null;
-
+    ScheduledFuture<?> scheduledFuture;
 
     long rateInMillis;
     long initialDelayInMillis = 0;
@@ -60,11 +62,14 @@ public class FixedRatePoller extends Poller {
 
     @Override
     public void init() {
-        getScheduler().scheduleWithFixedDelay(this::triggerPollingAction,
+        scheduledFuture = getScheduler().scheduleWithFixedDelay(this::triggerPollingAction,
                 initialDelayInMillis,
                 rateInMillis,
-                java.util.concurrent.TimeUnit.MILLISECONDS);
+                TimeUnit.MILLISECONDS);
     }
 
+    public void stop() {
+        scheduledFuture.cancel(true);
+    }
 
 }

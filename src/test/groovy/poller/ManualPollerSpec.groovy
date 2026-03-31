@@ -9,7 +9,7 @@ import spock.lang.Specification
 
 class ManualPollerSpec extends Specification {
 
-    def "DirectoryMessageSource test"() {
+    def "ManualPoller test"() {
         given: "A custom message source is created"
           MessageSource customMessageSource = new MessageSource() {
               @Override
