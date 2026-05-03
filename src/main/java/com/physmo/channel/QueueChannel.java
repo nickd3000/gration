@@ -2,12 +2,12 @@ package com.physmo.channel;
 
 import com.physmo.message.Msg;
 
-import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class QueueChannel implements MessageChannel,PollableChannel {
-    private final Queue<Msg<?>> queue = new LinkedList<>();
+    private final Queue<Msg<?>> queue = new ConcurrentLinkedQueue<>();
 
     @Override
     public void send(Msg<?> message) {
@@ -16,8 +16,7 @@ public class QueueChannel implements MessageChannel,PollableChannel {
 
     @Override
     public Optional<Msg<?>> poll() {
-        if (!queue.isEmpty()) return Optional.of(queue.poll());
-        return Optional.empty();
+        return Optional.ofNullable(queue.poll());
     }
 
 }

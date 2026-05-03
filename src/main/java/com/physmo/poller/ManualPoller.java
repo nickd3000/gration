@@ -16,5 +16,9 @@ public class ManualPoller extends Poller {
     public void init() {
     }
 
+    @Override
+    public void stop() {
+    }
+
 
 }

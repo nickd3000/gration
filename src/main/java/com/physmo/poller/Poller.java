@@ -1,6 +1,6 @@
 package com.physmo.poller;
 
-public abstract class Poller {
+public abstract class Poller implements AutoCloseable {
 
     Runnable pollingAction;
 
@@ -21,5 +21,12 @@ public abstract class Poller {
 
     public void triggerPollingAction() {
         this.pollingAction.run();
+    }
+
+    public abstract void stop();
+
+    @Override
+    public void close() {
+        stop();
     }
 }

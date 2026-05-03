@@ -3,10 +3,11 @@ package com.physmo.channel;
 import com.physmo.message.Msg;
 import com.physmo.message.Subscriber;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Represents a direct message channel that enables message delivery to all subscribed
@@ -23,8 +24,9 @@ import java.util.Queue;
  * - Supports adding and removing subscribers dynamically.
  */
 public class DirectChannel implements MessageChannel, SubscribableChannel {
-    private final Queue<Msg<?>> queue = new LinkedList<>();
-    private final List<Subscriber> subscribers = new ArrayList<>();
+    private final Queue<Msg<?>> queue = new ConcurrentLinkedQueue<>();
+    private final List<Subscriber> subscribers = new CopyOnWriteArrayList<>();
+    private final AtomicBoolean isProcessing = new AtomicBoolean(false);
 
     @Override
     public void send(Msg<?> msg) {
@@ -33,12 +35,28 @@ public class DirectChannel implements MessageChannel, SubscribableChannel {
     }
 
     public void process() {
-        while (!queue.isEmpty()) {
-            Msg<?> msg = queue.poll();
-            if (msg != null) {
+        if (!isProcessing.compareAndSet(false, true)) {
+            return;
+        }
+
+        try {
+            Msg<?> msg;
+            while ((msg = queue.poll()) != null) {
                 for (Subscriber r : subscribers) {
-                    r.receive(msg);
+                    try {
+                        r.receive(msg);
+                    } catch (Exception e) {
+                        // Basic error logging. In a more complete system,
+                        // this could be routed to an error channel.
+                        System.err.println("Error delivering message to subscriber: " + e.getMessage());
+                    }
                 }
+            }
+        } finally {
+            isProcessing.set(false);
+            // Re-check for new messages added during loop termination
+            if (!queue.isEmpty()) {
+                process();
             }
         }
     }

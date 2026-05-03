@@ -22,9 +22,8 @@ import java.util.concurrent.TimeUnit;
  * with a specified rate and an optional initial delay in milliseconds.
  */
 public class FixedRatePoller extends Poller {
-
-    static ScheduledExecutorService scheduler = null;
-    ScheduledFuture<?> scheduledFuture;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private ScheduledFuture<?> scheduledFuture;
 
     long rateInMillis;
     long initialDelayInMillis = 0;
@@ -53,23 +52,20 @@ public class FixedRatePoller extends Poller {
         this.initialDelayInMillis = initialDelayInMillis;
     }
 
-    private ScheduledExecutorService getScheduler() {
-        if (scheduler == null) {
-            scheduler = Executors.newScheduledThreadPool(1);
-        }
-        return scheduler;
-    }
-
     @Override
     public void init() {
-        scheduledFuture = getScheduler().scheduleWithFixedDelay(this::triggerPollingAction,
+        scheduledFuture = scheduler.scheduleWithFixedDelay(this::triggerPollingAction,
                 initialDelayInMillis,
                 rateInMillis,
                 TimeUnit.MILLISECONDS);
     }
 
+    @Override
     public void stop() {
-        scheduledFuture.cancel(true);
+        if (scheduledFuture != null) {
+            scheduledFuture.cancel(true);
+        }
+        scheduler.shutdown();
     }
 
 }
