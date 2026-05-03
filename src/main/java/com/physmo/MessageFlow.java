@@ -50,12 +50,12 @@ public class MessageFlow {
     }
 
     public MessageFlow handle(MessageHandler handler) {
-        addFlowComponent(handler);
+        addFlowComponent(Processor.fromHandler(handler));
         return this;
     }
 
     public MessageFlow transform(Transformer transformer) {
-        addFlowComponent(transformer);
+        addFlowComponent(Processor.fromTransformer(transformer));
         return this;
     }
 
@@ -64,12 +64,21 @@ public class MessageFlow {
         return this;
     }
 
-    private void addFlowComponent(FlowComponent flowComponent) {
+    /**
+     * Adds a flow component to the message flow by wrapping the given processor
+     * into a {@code FlowComponentWrapper}, setting its output channel, and subscribing
+     * the wrapper to the previous channel in the flow. Updates the flow tracking properties
+     * to reflect the newly added component.
+     *
+     * @param processor the processor to be wrapped and added as a flow component. The processor
+     *                  defines the processing logic for messages passing through this component.
+     */
+    private void addFlowComponent(Processor processor) {
 
         DirectChannel componentOutputChannel = new DirectChannel();
 
         FlowComponentWrapper wrapper = new FlowComponentWrapper();
-        wrapper.setFlowComponent(flowComponent);
+        wrapper.setProcessor(processor);
         wrapper.setOutputChannel(componentOutputChannel);
         previousChannel.addSubscriber(wrapper);
 
@@ -79,17 +88,17 @@ public class MessageFlow {
     }
 
     public MessageFlow peek(Peek peek) {
-        addFlowComponent(peek);
+        addFlowComponent(Processor.fromPeek(peek));
         return this;
     }
 
     public MessageFlow filter(Filter filter) {
-        addFlowComponent(filter);
+        addFlowComponent(Processor.fromFilter(filter));
         return this;
     }
 
     public MessageFlow split() {
-        addFlowComponent(new Split());
+        addFlowComponent(Processor.fromSplit(new Split()));
         return this;
     }
 

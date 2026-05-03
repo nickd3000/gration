@@ -7,39 +7,22 @@ import com.physmo.message.Subscriber;
 import java.util.List;
 
 public class FlowComponentWrapper implements Subscriber {
-    FlowComponent flowComponent;
+    Processor processor;
 
     MessageChannel outputChannel;
 
 
     @Override
     public void receive(Msg<?> msg) {
-        // TODO: can each component handle this stuff?
         if (outputChannel == null) {
             System.out.println("No output channel set");
             return;
         }
-        if (flowComponent instanceof MessageHandler handler) {
-            outputChannel.send(handler.handle(msg));
-        }
-        if (flowComponent instanceof Transformer transformer) {
-            outputChannel.send(transformer.transform(msg));
-        }
-        if (flowComponent instanceof Filter filter) {
-            if (filter.filter(msg)) {
-                outputChannel.send(msg);
-            }
-        }
-        if (flowComponent instanceof Peek peek) {
-            peek.peek(msg);
-            outputChannel.send(msg);
-        }
-        if (flowComponent instanceof Split split) {
-            List<Msg<?>>messages =  split.handle(msg);
 
-            for (Msg<?> message : messages) {
-                outputChannel.send(message);
-            }
+        List<Msg<?>> messages = processor.process(msg);
+
+        for (Msg<?> message : messages) {
+            outputChannel.send(message);
         }
     }
 
@@ -47,8 +30,8 @@ public class FlowComponentWrapper implements Subscriber {
         this.outputChannel = outputChannel;
     }
 
-    public void setFlowComponent(FlowComponent flowComponent) {
-        this.flowComponent = flowComponent;
+    public void setProcessor(Processor processor) {
+        this.processor = processor;
     }
 
 }
