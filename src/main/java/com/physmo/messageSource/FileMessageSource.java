@@ -10,7 +10,7 @@ import java.util.*;
 public class FileMessageSource implements MessageSource<List<File>> {
 
     String path;
-    private Map<String, Long> seenFiles = new HashMap<>();
+    private final Map<String, Long> seenFiles = new HashMap<>();
 
     public FileMessageSource(String path) {
         this.path = path;    

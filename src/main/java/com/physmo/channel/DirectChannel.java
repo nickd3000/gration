@@ -13,11 +13,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Represents a direct message channel that enables message delivery to all subscribed
  * recipients in a publish-subscribe model. Messages are processed in the order they
  * are sent, and each subscriber receives a copy of the message.
- *
+ * <p>
  * This class implements both {@code MessageChannel} and {@code SubscribableChannel} interfaces.
  * It supports message sending, subscription handling, and processing of messages
  * for all registered subscribers.
- *
+ * <p>
  * Features:
  * - Allows sending single messages or iterable collections of messages.
  * - Manages an internal queue for ordered message processing.

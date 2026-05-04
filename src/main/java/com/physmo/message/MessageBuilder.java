@@ -11,7 +11,7 @@ import java.util.Map;
  * @param <T> the type of the payload
  */
 public class MessageBuilder<T> {
-    private T payload;
+    private final T payload;
     private final Map<String, Object> headers = new HashMap<>();
 
     private MessageBuilder(T payload) {
