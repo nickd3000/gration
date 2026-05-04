@@ -23,7 +23,7 @@ class FileMessageSourceSpec extends Specification {
           MessageFlow.of(new FileMessageSource(path), manualPoller)
                   .peek(m -> results.add(m.toString()))
                   .split()
-                  .handler { m -> println m.toString() }
+                  .handle { m -> println m.toString() }
 
         and: "The manual poller is triggered"
           manualPoller.poll()

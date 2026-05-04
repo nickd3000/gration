@@ -11,10 +11,10 @@ class ManualPollerSpec extends Specification {
 
     def "ManualPoller test"() {
         given: "A custom message source is created"
-          MessageSource customMessageSource = new MessageSource() {
+          MessageSource<?> customMessageSource = new MessageSource<String>() {
               @Override
-              Optional<Msg> poll() {
-                  return Optional.of(new Msg("Hello"))
+              Optional<Msg<String>> poll() {
+                  return Optional.of(new Msg<String>("Hello"))
               }
           }
 

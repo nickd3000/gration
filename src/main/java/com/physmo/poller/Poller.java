@@ -16,7 +16,6 @@ public abstract class Poller implements AutoCloseable {
      */
     public void setPollingAction(Runnable pollingAction) {
         this.pollingAction = pollingAction;
-        init();
     }
 
     public void triggerPollingAction() {

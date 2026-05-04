@@ -27,8 +27,10 @@ class PollerMessageFlowSpec extends Specification {
           List<String> results = new ArrayList()
 
         and: "A message flow is created"
-          MessageFlow.of(constantMessageChannel, new FixedRatePoller(pollingIntervalMs))
+          FixedRatePoller poller = new FixedRatePoller(pollingIntervalMs)
+          MessageFlow.of(constantMessageChannel, poller)
                   .peek(m -> results.add(m.toString()))
+          poller.init()
 
         and: "Execution sleeps for a short time"
           sleep(testDurationMs)
