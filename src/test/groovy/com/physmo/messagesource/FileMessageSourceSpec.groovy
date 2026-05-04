@@ -1,7 +1,7 @@
 package messageSource
 
-import com.physmo.MessageFlow
-import com.physmo.messageSource.FileMessageSource
+import com.physmo.core.MessageFlow
+import com.physmo.messagesource.FileMessageSource
 import com.physmo.poller.FixedRatePoller
 import com.physmo.poller.ManualPoller
 import com.physmo.poller.Poller

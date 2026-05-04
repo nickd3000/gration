@@ -1,4 +1,6 @@
-package com.physmo;
+package com.physmo.core;
+
+import com.physmo.processor.Processor;
 
 import com.physmo.channel.MessageChannel;
 import com.physmo.message.Msg;

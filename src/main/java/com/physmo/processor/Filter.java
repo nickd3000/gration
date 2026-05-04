@@ -1,4 +1,6 @@
-package com.physmo;
+package com.physmo.processor;
+
+import com.physmo.core.FlowComponent;
 
 import com.physmo.message.Msg;
 

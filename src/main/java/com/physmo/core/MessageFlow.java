@@ -1,11 +1,18 @@
-package com.physmo;
+package com.physmo.core;
+
+import com.physmo.processor.Filter;
+import com.physmo.processor.MessageHandler;
+import com.physmo.processor.Peek;
+import com.physmo.processor.Processor;
+import com.physmo.processor.Split;
+import com.physmo.processor.Transformer;
 
 import com.physmo.channel.DirectChannel;
 import com.physmo.channel.MessageChannel;
 import com.physmo.channel.PollableChannel;
 import com.physmo.channel.SubscribableChannel;
 import com.physmo.message.Msg;
-import com.physmo.messageSource.MessageSource;
+import com.physmo.messagesource.MessageSource;
 import com.physmo.poller.Poller;
 
 import java.util.ArrayList;

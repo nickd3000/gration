@@ -1,4 +1,4 @@
-import com.physmo.MessageFlow
+import com.physmo.core.MessageFlow
 import com.physmo.channel.DirectChannel
 import com.physmo.message.Msg
 import spock.lang.Specification

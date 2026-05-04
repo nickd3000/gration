@@ -1,7 +1,7 @@
-package com.physmo.reference;
+package com.physmo.examples;
 
-import com.physmo.MessageFlow;
-import com.physmo.messageSource.FileMessageSource;
+import com.physmo.core.MessageFlow;
+import com.physmo.messagesource.FileMessageSource;
 import com.physmo.poller.FixedRatePoller;
 
 import java.io.File;

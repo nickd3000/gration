@@ -1,9 +1,9 @@
 package poller
 
-import com.physmo.MessageFlow
+import com.physmo.core.MessageFlow
 import com.physmo.message.Msg
-import com.physmo.messageSource.FileMessageSource
-import com.physmo.messageSource.MessageSource
+import com.physmo.messagesource.FileMessageSource
+import com.physmo.messagesource.MessageSource
 import com.physmo.poller.ManualPoller
 import spock.lang.Specification
 

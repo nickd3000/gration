@@ -1,6 +1,6 @@
-package com.physmo.reference;
+package com.physmo.examples;
 
-import com.physmo.MessageFlow;
+import com.physmo.core.MessageFlow;
 import com.physmo.channel.QueueChannel;
 import com.physmo.message.MessageBuilder;
 import com.physmo.poller.ManualPoller;

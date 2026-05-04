@@ -1,4 +1,4 @@
-package com.physmo.messageSource;
+package com.physmo.messagesource;
 
 import com.physmo.message.Msg;
 

@@ -1,3 +1,3 @@
-package com.physmo;
+package com.physmo.core;
 
 public interface FlowComponent{};

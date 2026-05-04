@@ -1,4 +1,6 @@
-package com.physmo;
+package com.physmo.core;
+
+import com.physmo.core.MessageFlow;
 
 import com.physmo.channel.DirectChannel;
 
