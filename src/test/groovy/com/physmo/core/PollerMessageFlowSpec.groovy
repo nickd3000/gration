@@ -1,21 +1,18 @@
-import com.physmo.core.MessageFlow
-import com.physmo.channel.DirectChannel
+package com.physmo.core
+
 import com.physmo.channel.PollableChannel
 import com.physmo.message.Msg
 import com.physmo.poller.FixedRatePoller
 import spock.lang.Specification
 
 class PollerMessageFlowSpec extends Specification {
-
-    def "PollableChannel and Poller work in combination"() {
-        given: "Parameters are defined"
+    def "should process messages when PollableChannel and Poller work in combination"() {
+        given: "parameters and a custom PollableChannel"
           def pollingIntervalMs = 100
           def testDurationMs = 1000
           def minimumExpectedMessages = 9
           def expectedMessageContent = "Msg{payload=hello there, headers={}}"
           def testMessage = new Msg("hello there")
-
-        and: "A PollableChannel is created that emits a string"
           PollableChannel constantMessageChannel = new PollableChannel() {
               @Override
               Optional<Msg<?>> poll() {
@@ -23,20 +20,18 @@ class PollerMessageFlowSpec extends Specification {
               }
           }
 
-        and: "A result list is created"
+        and: "a result list and a message flow"
           List<String> results = new ArrayList()
-
-        and: "A message flow is created"
           FixedRatePoller poller = new FixedRatePoller(pollingIntervalMs)
           MessageFlow.of(constantMessageChannel, poller)
                   .peek(m -> results.add(m.toString()))
+
+        when: "the poller is initialized and execution sleeps for a test duration"
           poller.init()
-
-        and: "Execution sleeps for a short time"
           sleep(testDurationMs)
-          println(results)
+          poller.stop()
 
-        expect:
+        then: "the results list contains the expected number of messages"
           results.size() >= minimumExpectedMessages
           results.get(0) == expectedMessageContent
           results.get(1) == expectedMessageContent

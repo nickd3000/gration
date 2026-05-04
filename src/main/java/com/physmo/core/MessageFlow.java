@@ -80,9 +80,7 @@ public class MessageFlow {
     public static MessageFlow of(MessageSource<?> messageSource, Poller poller) {
         DirectChannel channelConnector = new DirectChannel();
 
-        poller.setPollingAction(() -> {
-            messageSource.poll().ifPresent(channelConnector::send);
-        });
+        poller.setPollingAction(() -> messageSource.poll().ifPresent(channelConnector::send));
 
         return new MessageFlow(channelConnector);
     }

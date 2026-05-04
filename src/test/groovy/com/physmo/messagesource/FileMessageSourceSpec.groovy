@@ -1,36 +1,25 @@
-package messageSource
+package com.physmo.messagesource
 
 import com.physmo.core.MessageFlow
-import com.physmo.messagesource.FileMessageSource
-import com.physmo.poller.FixedRatePoller
 import com.physmo.poller.ManualPoller
-import com.physmo.poller.Poller
 import spock.lang.Specification
 
 class FileMessageSourceSpec extends Specification {
-
-    def "DirectoryMessageSource test"() {
-        given: "Parameters are defined"
+    def "should list files using FileMessageSource and ManualPoller"() {
+        given: "a temporary path and a manual poller"
           String path = "/tmp"
-
-        and: "A String list is created to store results"
-          List<String> results = new ArrayList()
-
-        and: "A manual poller is created"
           ManualPoller manualPoller = new ManualPoller()
 
-        and: "A message flow is created"
+        and: "a result list and a message flow"
+          List<String> results = new ArrayList()
           MessageFlow.of(new FileMessageSource(path), manualPoller)
                   .peek(m -> results.add(m.toString()))
                   .split()
-                  .handle { m -> println m.toString() }
 
-        and: "The manual poller is triggered"
+        when: "the manual poller is triggered"
           manualPoller.poll()
-          println(results)
 
-        expect:
+        then: "the results list contains one message representing the list of files"
           results.size() == 1
-
     }
 }

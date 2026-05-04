@@ -1,41 +1,32 @@
-package poller
+package com.physmo.poller
 
 import com.physmo.core.MessageFlow
 import com.physmo.message.Msg
-import com.physmo.messagesource.FileMessageSource
 import com.physmo.messagesource.MessageSource
-import com.physmo.poller.ManualPoller
 import spock.lang.Specification
 
 class ManualPollerSpec extends Specification {
-
-    def "ManualPoller test"() {
-        given: "A custom message source is created"
-          MessageSource<?> customMessageSource = new MessageSource<String>() {
+    def "should process messages when manual poller is triggered"() {
+        given: "a custom message source and a manual poller"
+          MessageSource<String> customMessageSource = new MessageSource<String>() {
               @Override
               Optional<Msg<String>> poll() {
                   return Optional.of(new Msg<String>("Hello"))
               }
           }
-
-        and: "A String list is created to store results"
-          List<String> results = new ArrayList()
-
-        and: "A manual poller is created"
           ManualPoller manualPoller = new ManualPoller()
 
-        and: "A message flow is created"
+        and: "a result list and a message flow"
+          List<String> results = new ArrayList()
           MessageFlow.of(customMessageSource, manualPoller)
                   .peek(m -> results.add(m.toString()))
 
-        and: "The manual poller is triggered 3 times"
+        when: "the manual poller is triggered three times"
           manualPoller.poll()
           manualPoller.poll()
           manualPoller.poll()
-          println(results)
 
-        expect:
+        then: "the results list contains three messages"
           results.size() == 3
-
     }
 }
